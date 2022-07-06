@@ -43,6 +43,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add a marker in Sydney and move the camera
         val sydney = LatLng(-34.0, 151.0)
         mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        // Default Camera Action
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+        //Zoomed Camera from ( 1 to 20)
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,15f))
+
+        // Enable/Disable UI settings for Map
+        mMap.uiSettings.apply {
+            // Enable zoom control buttons
+            isZoomControlsEnabled = true
+            //Enable/Disable Zoom by gestures
+            isZoomGesturesEnabled = false
+            //Enable/Disable scrolling Map
+            isScrollGesturesEnabled = false
+            //Enable/Disable Rotating Map
+            isRotateGesturesEnabled = true
+            //Enable/Disable Map toolbar (Two buttons below screen when clicking marker)
+            isMapToolbarEnabled = false
+            //Enable/Disable Compass, (will show only if map is rotated)
+            isCompassEnabled = true
+
+        }
     }
 }
