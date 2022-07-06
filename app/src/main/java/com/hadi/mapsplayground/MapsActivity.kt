@@ -63,7 +63,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             isMapToolbarEnabled = false
             //Enable/Disable Compass, (will show only if map is rotated)
             isCompassEnabled = true
-
         }
+        /**
+         * Add padding to right side of the screen,
+         * buttons will also move w.r.to padding
+         */
+        mMap.setPadding(0,0,300,0)
     }
 }
