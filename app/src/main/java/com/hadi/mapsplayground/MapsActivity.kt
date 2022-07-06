@@ -2,6 +2,7 @@ package com.hadi.mapsplayground
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 
@@ -10,6 +11,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hadi.mapsplayground.databinding.ActivityMapsBinding
 
@@ -95,5 +97,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
          * buttons will also move w.r.to padding
          */
         mMap.setPadding(0,0,10,0)
+        setMapStyle(mMap)
+    }
+
+
+    private fun setMapStyle(googleMap: GoogleMap) {
+        try{
+            val success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style))
+            if(!success) {
+                Log.d("MAPS", "setMapStyle: Failed to Add Style")
+            }
+        }catch (e : Exception) {
+            Log.d("MAPS", e.toString())
+        }
     }
 }
