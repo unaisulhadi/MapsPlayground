@@ -2,6 +2,8 @@ package com.hadi.mapsplayground
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -28,15 +30,39 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.map_types_menu,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId){
+
+            R.id.normal_map -> {
+                mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+            }
+
+            R.id.hybrid_map -> {
+                mMap.mapType = GoogleMap.MAP_TYPE_HYBRID
+            }
+
+            R.id.satellite_map -> {
+                mMap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+            }
+
+            R.id.terrain_map -> {
+                mMap.mapType = GoogleMap.MAP_TYPE_TERRAIN
+            }
+
+            R.id.none_map -> {
+                mMap.mapType = GoogleMap.MAP_TYPE_NONE
+            }
+        }
+        return true
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
@@ -54,9 +80,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             // Enable zoom control buttons
             isZoomControlsEnabled = true
             //Enable/Disable Zoom by gestures
-            isZoomGesturesEnabled = false
+            isZoomGesturesEnabled = true
             //Enable/Disable scrolling Map
-            isScrollGesturesEnabled = false
+            isScrollGesturesEnabled = true
             //Enable/Disable Rotating Map
             isRotateGesturesEnabled = true
             //Enable/Disable Map toolbar (Two buttons below screen when clicking marker)
@@ -68,6 +94,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
          * Add padding to right side of the screen,
          * buttons will also move w.r.to padding
          */
-        mMap.setPadding(0,0,300,0)
+        mMap.setPadding(0,0,10,0)
     }
 }
