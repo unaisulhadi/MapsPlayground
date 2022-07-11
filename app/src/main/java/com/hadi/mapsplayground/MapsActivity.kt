@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.hadi.mapsplayground.databinding.ActivityMapsBinding
 import com.hadi.mapsplayground.misc.CameraAndViewPort
+import com.hadi.mapsplayground.misc.Shapes.addCircle
 import com.hadi.mapsplayground.misc.Shapes.addPolygon
 import com.hadi.mapsplayground.misc.Shapes.addPolyline
 import com.hadi.mapsplayground.misc.TypesAndStyle
@@ -78,7 +79,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             isZoomControlsEnabled = true
         }
         typesAndStyle.setMapStyle(map, this)
-        addPolygon(map)
+        lifecycleScope.launch {
+            addPolyline(map)
+        }
+        //addPolygon(map)
+        //addCircle(map)
     }
 
 }

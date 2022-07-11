@@ -2,9 +2,7 @@ package com.hadi.mapsplayground.misc
 
 import android.graphics.Color
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.PolygonOptions
-import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.maps.model.*
 import com.hadi.mapsplayground.R
 import kotlinx.coroutines.delay
 
@@ -27,13 +25,19 @@ object Shapes {
     private val p03 = LatLng(33.81806746160135, -118.60666877150375)
 
     suspend fun addPolyline(map: GoogleMap) {
+
+        val pattern = listOf(Dot(), Gap(30f), Dash(50f), Gap(30f))
         val polyline = map.addPolyline(
             PolylineOptions().apply {
                 add(losAngeles, newYork, madrid)
-                width(5f)
+                width(20f)
                 color(Color.BLUE)
                 geodesic(true) // Curved polyline
                 clickable(true)
+                //pattern(pattern)
+                jointType(JointType.ROUND) //Rounded intersections
+                startCap(CustomCap(BitmapDescriptorFactory.fromResource(R.drawable.ic_power_start),100f))
+                endCap(RoundCap())
             }
         )
 
@@ -54,4 +58,13 @@ object Shapes {
         )
     }
 
+    fun addCircle(map: GoogleMap) {
+        val circle = map.addCircle(
+            CircleOptions().apply {
+                center(losAngeles)
+                radius(50000.0)
+                fillColor(R.color.purple_200)
+            }
+        )
+    }
 }
