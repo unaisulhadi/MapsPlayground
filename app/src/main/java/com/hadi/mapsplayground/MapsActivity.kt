@@ -2,6 +2,7 @@ package com.hadi.mapsplayground
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -12,6 +13,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hadi.mapsplayground.databinding.ActivityMapsBinding
 import com.hadi.mapsplayground.misc.CameraAndViewPort
@@ -19,7 +21,8 @@ import com.hadi.mapsplayground.misc.TypesAndStyle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
+    GoogleMap.OnMarkerDragListener {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -57,7 +60,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val losAngeles = LatLng(34.05373280386964, -118.2473114968821)
         val newYork = LatLng(40.71392607522911, -73.9915848140515)
 
-        map.addMarker(MarkerOptions().position(losAngeles).title("Marker in LA"))
+        val laMarker = map.addMarker(MarkerOptions().position(losAngeles).title("Marker in LA"))
+
+
+        /************** MARKERS *************/
+        /**
+         *
+         * Disable default info window show up in marker clicks
+         *
+         */
+        laMarker?.tag = "Restaurant"
+        map.setOnMarkerClickListener(this)
+
+        /**
+         * make marker draggable
+         */
+        laMarker?.isDraggable = true
+        map.setOnMarkerDragListener(this)
+
+
         // Default Camera Action
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
 
@@ -145,6 +166,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             //Zoom with Animation
             //map.animateCamera(CameraUpdateFactory.zoomBy(3f),2000,null)
 
+
+
+
+
+
+
+
+
+
+
+
+
             //Zoom with multiple properties like zoom, target, bearing, tilt
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewPort.losAngeles),2000,object : GoogleMap.CancelableCallback {
                 override fun onCancel() {
@@ -167,6 +200,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        Log.d("MARKER_PG", marker.tag as String)
+
+        /**
+         * returning true will disable showing marker info on click
+         */
+        return true
+    }
+
+    override fun onMarkerDrag(p0: Marker) {
+        Log.d("MARKER_PG","DRAG")
+    }
+
+    override fun onMarkerDragEnd(p0: Marker) {
+        Log.d("MARKER_PG","END")
+    }
+
+    override fun onMarkerDragStart(p0: Marker) {
+        Log.d("MARKER_PG","START")
     }
 
 
