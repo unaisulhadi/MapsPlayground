@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.hadi.mapsplayground.databinding.ActivityMapsBinding
 import com.hadi.mapsplayground.misc.CameraAndViewPort
+import com.hadi.mapsplayground.misc.Overlays
 import com.hadi.mapsplayground.misc.Shapes.addCircle
 import com.hadi.mapsplayground.misc.Shapes.addPolygon
 import com.hadi.mapsplayground.misc.Shapes.addPolyline
@@ -31,6 +32,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val typesAndStyle by lazy { TypesAndStyle() }
     private val cameraAndViewPort by lazy { CameraAndViewPort() }
+    private val overlays by lazy { Overlays() }
 
     val losAngeles = LatLng(34.05373280386964, -118.2473114968821)
     val newYork = LatLng(40.71392607522911, -73.9915848140515)
@@ -79,11 +81,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             isZoomControlsEnabled = true
         }
         typesAndStyle.setMapStyle(map, this)
+        //overlays.addGroundOverlay(map)
+        val groundOverlay = overlays.addGroundOverlayBounds(map)
         lifecycleScope.launch {
-            addPolyline(map)
+            delay(4000L)
+            //groundOverlay?.remove()
+            groundOverlay?.transparency = 0.5f
         }
-        //addPolygon(map)
-        //addCircle(map)
+
     }
 
 }
