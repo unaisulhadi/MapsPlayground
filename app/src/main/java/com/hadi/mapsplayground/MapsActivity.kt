@@ -82,25 +82,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         typesAndStyle.setMapStyle(map, this)
 
-        val layer = GeoJsonLayer(map, R.raw.map, this)
-        layer.addLayerToMap()
-
-        //Add color to polygon
-        val polygonStyle = layer.defaultPolygonStyle
-        polygonStyle.apply {
-            fillColor = getColor(R.color.purple_200)
-        }
-
-        layer.setOnFeatureClickListener {
-            Log.d("MAP_LAYER_FEATURE", "onMapReady: ${it.getProperty("country")}")
-        }
-
-        for(feature in layer.features){
-            if(feature.hasProperty("country")){
-                Log.d("MAP_LAYER_FEATURE", "onMapReady: SUCCESS ")
-            }
-        }
-        
     }
 
 }
