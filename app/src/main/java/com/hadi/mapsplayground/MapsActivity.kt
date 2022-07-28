@@ -2,6 +2,7 @@ package com.hadi.mapsplayground
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -15,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.hadi.mapsplayground.databinding.ActivityMapsBinding
 import com.hadi.mapsplayground.misc.CameraAndViewPort
 import com.hadi.mapsplayground.misc.Shapes.addCircle
@@ -79,11 +81,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             isZoomControlsEnabled = true
         }
         typesAndStyle.setMapStyle(map, this)
-        lifecycleScope.launch {
-            addPolyline(map)
+
+        val layer = GeoJsonLayer(map, R.raw.map, this)
+        layer.addLayerToMap()
+
+        //Add color to polygon
+        val polygonStyle = layer.defaultPolygonStyle
+        polygonStyle.apply {
+            fillColor = getColor(R.color.purple_200)
         }
-        //addPolygon(map)
-        //addCircle(map)
+
+        layer.setOnFeatureClickListener {
+            Log.d("MAP_LAYER_FEATURE", "onMapReady: ${it.getProperty("country")}")
+        }
+
+        for(feature in layer.features){
+            if(feature.hasProperty("country")){
+                Log.d("MAP_LAYER_FEATURE", "onMapReady: SUCCESS ")
+            }
+        }
+        
     }
 
 }
