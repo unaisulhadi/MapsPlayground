@@ -99,18 +99,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         typesAndStyle.setMapStyle(map, this)
 
-
-        clusterManager = ClusterManager(this, map)
-        map.setOnCameraIdleListener(clusterManager)
-        addMarkers()
-
     }
 
-    private fun addMarkers() {
-        locationList.zip(titleList).zip(snippetList).forEach { pair ->
-            val myItem = MyItem(pair.first.first, pair.first.second, pair.second)
-            clusterManager.addItem(myItem)
-        }
-    }
 
 }
