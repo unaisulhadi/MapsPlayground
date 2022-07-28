@@ -12,12 +12,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.Polyline
-import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.maps.model.*
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.data.geojson.GeoJsonLayer
+import com.google.maps.android.heatmaps.Gradient
+import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.hadi.mapsplayground.databinding.ActivityMapsBinding
 import com.hadi.mapsplayground.misc.CameraAndViewPort
 import com.hadi.mapsplayground.misc.MyItem
@@ -53,9 +52,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         LatLng(33.484967570542835, -108.95919451960859),
         LatLng(32.50364494635834, -106.82235368711534),
     )
-
-    private val titleList = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
-    private val snippetList = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
 
     private lateinit var clusterManager: ClusterManager<MyItem>
 
@@ -98,7 +94,38 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             isZoomControlsEnabled = true
         }
         typesAndStyle.setMapStyle(map, this)
+        addHeatMap()
+    }
 
+    private fun addHeatMap() {
+
+        val colors = intArrayOf(
+            Color.rgb(0, 128, 255),
+            Color.rgb(204 , 0, 204),
+            Color.rgb(255 ,255,51),
+        )
+
+        val startPoints = floatArrayOf(
+            0.2f, 0.5f , 0.8f
+        )
+
+        val gradient = Gradient(colors, startPoints)
+
+        val provider = HeatmapTileProvider.Builder()
+            .data(locationList)
+            .gradient(gradient)
+            .opacity(0.3)
+             .radius(50) //10 to 50  ; default 20
+            .build()
+
+        val overlays = map.addTileOverlay(TileOverlayOptions().tileProvider(provider))
+
+        lifecycleScope.launch {
+            delay(5000)
+            overlays!!.clearTileCache()
+            //provider.setRadius(50)
+            overlays!!.remove()
+        }
     }
 
 
